@@ -1,0 +1,228 @@
+
+const admin = require('firebase-admin');
+const { getApps, initializeApp, cert } = require('firebase-admin/app');
+const { getDatabase } = require('firebase-admin/database');
+const config = require('./env');
+
+// Initialize Firebase Admin SDK
+if (!getApps().length) {
+  initializeApp({
+    credential: cert(
+      require('/home/ec2-user/.config/queueless/service-account.json')
+    ),
+    databaseURL: config.firebase.databaseURL,
+  });
+}
+
+// Firebase Realtime Database
+const db = getDatabase();
+
+// Database references
+const refs = {
+  // Queue state
+  queueState: () => db.ref('queue/state'),
+  tokens: () => db.ref('queue/tokens'),
+  token: (id) => db.ref(`queue/tokens/${id}`),
+  counter: () => db.ref('queue/counter'),
+
+  // Administrators
+  admins: () => db.ref('admins'),
+  admin: (username) => db.ref(`admins/${username}`),
+
+  // Staff
+  staff: () => db.ref('staff'),
+  staffMember: (username) => db.ref(`staff/${username}`),
+
+  // Presence
+  presence: () => db.ref('presence'),
+  presenceMember: (username) => db.ref(`presence/${username}`),
+
+  // Application configuration
+  appConfig: () => db.ref('config'),
+
+  // Multiple queues
+  queues: () => db.ref('queues'),
+  queueDef: (id) => db.ref(`queues/${id}`),
+
+  // Conversations
+  conversations: () => db.ref('conversations'),
+  conversationMeta: (id) =>
+    db.ref(`conversations/${id}/meta`),
+  conversationMessages: (id) =>
+    db.ref(`conversations/${id}/messages`),
+  conversationMessage: (id, mid) =>
+    db.ref(`conversations/${id}/messages/${mid}`),
+  conversationReads: (id) =>
+    db.ref(`conversations/${id}/reads`),
+  conversationRead: (id, username) =>
+    db.ref(`conversations/${id}/reads/${username}`),
+
+  // Messaging signals
+  messageSignal: (id) =>
+    db.ref(`messageSignals/${id}`),
+
+  // Notifications
+  notifications: (username) =>
+    db.ref(`notifications/${username}`),
+  notification: (username, id) =>
+    db.ref(`notifications/${username}/${id}`),
+  notificationSignal: (username) =>
+    db.ref(`notificationSignals/${username}`),
+
+  // AI conversations
+  aiConversations: (u) =>
+    db.ref(`aiConversations/${u}`),
+  aiConversation: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}`),
+  aiConversationMeta: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}/meta`),
+  aiConversationMessages: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}/messages`),
+  aiConversationMessage: (u, cid, mid) =>
+    db.ref(`aiConversations/${u}/${cid}/messages/${mid}`),
+
+  // File sharing
+  shares: () => db.ref('shares'),
+  share: (id) => db.ref(`shares/${id}`),
+
+  // Audit logs
+  auditLogs: () => db.ref('auditLogs'),
+  auditLog: (id) => db.ref(`auditLogs/${id}`),
+
+  // Shared file uploads
+  uploads: () => db.ref('uploads'),
+  upload: (id) => db.ref(`uploads/${id}`),
+  uploadIndex: (owner) =>
+    db.ref(`uploadIndex/${owner}`),
+  uploadIndexEntry: (owner, id) =>
+    db.ref(`uploadIndex/${owner}/${id}`),
+
+  // Feedback
+  feedback: () => db.ref('feedback'),
+  feedbackEntry: (tokenId) =>
+    db.ref(`feedback/${tokenId}`),
+
+  // Announcements
+  announcement: () => db.ref('queue/announcement'),
+
+  // Appointments
+  appointments: () => db.ref('appointments'),
+  appointment: (id) =>
+    db.ref(`appointments/${id}`),
+};
+
+module.exports = { admin, db, refs };
+
+const admin = require('firebase-admin');
+const { getApps, initializeApp, cert } = require('firebase-admin/app');
+const { getDatabase } = require('firebase-admin/database');
+const config = require('./env');
+
+// Initialize Firebase Admin SDK
+if (!getApps().length) {
+  initializeApp({
+    credential: cert(
+      require('/home/ec2-user/.config/queueless/service-account.json')
+    ),
+    databaseURL: config.firebase.databaseURL,
+  });
+}
+
+// Firebase Realtime Database
+const db = getDatabase();
+
+// Database references
+const refs = {
+  // Queue state
+  queueState: () => db.ref('queue/state'),
+  tokens: () => db.ref('queue/tokens'),
+  token: (id) => db.ref(`queue/tokens/${id}`),
+  counter: () => db.ref('queue/counter'),
+
+  // Administrators
+  admins: () => db.ref('admins'),
+  admin: (username) => db.ref(`admins/${username}`),
+
+  // Staff
+  staff: () => db.ref('staff'),
+  staffMember: (username) => db.ref(`staff/${username}`),
+
+  // Presence
+  presence: () => db.ref('presence'),
+  presenceMember: (username) => db.ref(`presence/${username}`),
+
+  // Application configuration
+  appConfig: () => db.ref('config'),
+
+  // Multiple queues
+  queues: () => db.ref('queues'),
+  queueDef: (id) => db.ref(`queues/${id}`),
+
+  // Conversations
+  conversations: () => db.ref('conversations'),
+  conversationMeta: (id) =>
+    db.ref(`conversations/${id}/meta`),
+  conversationMessages: (id) =>
+    db.ref(`conversations/${id}/messages`),
+  conversationMessage: (id, mid) =>
+    db.ref(`conversations/${id}/messages/${mid}`),
+  conversationReads: (id) =>
+    db.ref(`conversations/${id}/reads`),
+  conversationRead: (id, username) =>
+    db.ref(`conversations/${id}/reads/${username}`),
+
+  // Messaging signals
+  messageSignal: (id) =>
+    db.ref(`messageSignals/${id}`),
+
+  // Notifications
+  notifications: (username) =>
+    db.ref(`notifications/${username}`),
+  notification: (username, id) =>
+    db.ref(`notifications/${username}/${id}`),
+  notificationSignal: (username) =>
+    db.ref(`notificationSignals/${username}`),
+
+  // AI conversations
+  aiConversations: (u) =>
+    db.ref(`aiConversations/${u}`),
+  aiConversation: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}`),
+  aiConversationMeta: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}/meta`),
+  aiConversationMessages: (u, cid) =>
+    db.ref(`aiConversations/${u}/${cid}/messages`),
+  aiConversationMessage: (u, cid, mid) =>
+    db.ref(`aiConversations/${u}/${cid}/messages/${mid}`),
+
+  // File sharing
+  shares: () => db.ref('shares'),
+  share: (id) => db.ref(`shares/${id}`),
+
+  // Audit logs
+  auditLogs: () => db.ref('auditLogs'),
+  auditLog: (id) => db.ref(`auditLogs/${id}`),
+
+  // Shared file uploads
+  uploads: () => db.ref('uploads'),
+  upload: (id) => db.ref(`uploads/${id}`),
+  uploadIndex: (owner) =>
+    db.ref(`uploadIndex/${owner}`),
+  uploadIndexEntry: (owner, id) =>
+    db.ref(`uploadIndex/${owner}/${id}`),
+
+  // Feedback
+  feedback: () => db.ref('feedback'),
+  feedbackEntry: (tokenId) =>
+    db.ref(`feedback/${tokenId}`),
+
+  // Announcements
+  announcement: () => db.ref('queue/announcement'),
+
+  // Appointments
+  appointments: () => db.ref('appointments'),
+  appointment: (id) =>
+    db.ref(`appointments/${id}`),
+};
+
+module.exports = { admin, db, refs };
